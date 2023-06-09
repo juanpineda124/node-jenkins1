@@ -3,12 +3,12 @@ pipeline{
 
     stages{
         stage('Clonar el repositorio'){
-            stage{
+            steps{
                 git branch: 'main', credentialsId: 'git-jenkins', url: 'https://github.com/juanpineda124/node-jenkins1.git'
             }
         }
         stage('Contruir imagen Docker'){
-            stage{
+            steps{
                 script{
                     witchCredentials([
                     string(credentialsId: 'MONGO:URI', variable: 'MONGO_URI' )
@@ -28,9 +28,9 @@ pipeline{
                                 sed 's|\\${MONGO_URI}|${MONGO_URI}|g' docker-compose.yml > docker-compose-update.yml
                                 docker-compose -f  docker-compose-update.yml up -d   
                          """
-                    }
+                        }
+                }
             }
-        }
+         }
     }
-}
 }
